@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postman.API", "Postman.API\Postman.API.csproj", "{305A4C7D-87BB-4479-975B-5A13F1406819}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{305A4C7D-87BB-4479-975B-5A13F1406819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{305A4C7D-87BB-4479-975B-5A13F1406819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{305A4C7D-87BB-4479-975B-5A13F1406819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{305A4C7D-87BB-4479-975B-5A13F1406819}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB5BA186-019F-469C-BD4F-4FC0462F03A5}
+	EndGlobalSection
+EndGlobal
