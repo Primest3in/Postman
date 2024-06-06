@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Postman.API.Data;
 using Postman.API.Model.Domain;
 
 namespace Postman.API.Controllers
@@ -8,31 +9,16 @@ namespace Postman.API.Controllers
     [ApiController]
     public class RegionsController : ControllerBase
     {
+        private readonly ApplicationDBContext _dbContext;
+        public RegionsController(ApplicationDBContext dBContext) {
+            this._dbContext = dBContext;                 
+        }
+
         // GET BY: api/Regions
         [HttpGet]
         public IActionResult GetAll()
         {
-            var regions = new List<Region>
-            {
-                new Region
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Sylhet Region",
-                    Code = "Syl",
-                    RegionImgUrl = "https://www.tbsnews.net/sites/default/files/styles/amp_metadata_content_image_min_696px_wide/public/images/2022/01/28/sylhet_talha-chowdhury.jpg"
-
-                },
-                new Region
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Dhaka Region",
-                    Code = "Dhk",
-                    RegionImgUrl = "https://www.gettyimages.com/photos/dhaka"
-                }
-
-
-            };
-
+            var regions = _dbContext.RegionTable.ToList();
             return Ok(regions);
         }
     }
