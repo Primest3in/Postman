@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Postman.API.Data;
 using Postman.API.Model.Domain;
+using Postman.API.Model.DTO;
+
 
 namespace Postman.API.Controllers
 {
@@ -19,7 +21,40 @@ namespace Postman.API.Controllers
         public IActionResult GetAll()
         {
             var regions = _dbContext.RegionTable.ToList();
-            return Ok(regions);
+            var regionsDTO = new List<RegionDTO>();
+            foreach (var region in regions)
+            {
+                regionsDTO.Add(new RegionDTO()
+                {
+                    Id = region.Id,
+                    Code = region.Code,
+                    Name = region.Name,
+                    RegionImgUrl = region.RegionImgUrl
+                    
+                });
+            }
+            return Ok(regionsDTO);
+        }
+
+        [HttpGet]
+        [Route("{id:guid}")]
+        public IActionResult GetById([FromRoute] Guid id) {
+            var region = _dbContext.RegionTable.FirstOrDefault(x => x.Id == id);
+            if(region == null)
+            {
+                return NotFound();
+            }
+
+            var regionDTO = new RegionDTO()
+            {
+                Id = region.Id,
+                Code = region.Code,
+                Name = region.Name,
+                RegionImgUrl = region.RegionImgUrl
+            };
+            return Ok(regionDTO);
         }
     }
+
+    
 }

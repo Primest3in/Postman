@@ -1,6 +1,6 @@
 ﻿namespace Postman.API.Model.DTO
 {
-    public class Class
+    public class RegionDTO
     {
         public Guid Id { get; set; }
         public string Code { get; set; }
