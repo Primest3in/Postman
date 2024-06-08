@@ -100,6 +100,27 @@ namespace Postman.API.Controllers
 
             };
             return Ok(regionDTO);
-        } 
+        }
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public IActionResult Delete([FromRoute] Guid id)
+        {
+            var region = _dbContext.RegionTable.FirstOrDefault(x=> x.Id == id);
+            if(region  == null)
+            {
+                return NotFound();
+            }
+            _dbContext.RegionTable.Remove(region);
+            _dbContext.SaveChanges();
+
+            var regionDTO = new RegionDTO()
+            {
+                Id = region.Id,
+                Code = region.Code,
+                Name = region.Name,
+                RegionImgUrl = region.RegionImgUrl
+            };
+            return Ok(regionDTO);    
+        }
     }
 }
