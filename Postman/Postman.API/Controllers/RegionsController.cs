@@ -54,6 +54,29 @@ namespace Postman.API.Controllers
             };
             return Ok(regionDTO);
         }
+        [HttpPost]
+        public IActionResult Create([FromBody] AddRegionDTO addRegionDTO) 
+        {
+                var region = new Region()
+                {
+                    Code = addRegionDTO.Code,
+                    Name = addRegionDTO.Name,
+                    RegionImgUrl = addRegionDTO.RegionImgUrl
+                };
+
+                _dbContext.RegionTable.Add(region);
+                _dbContext.SaveChanges();
+
+            var regionDTO = new RegionDTO()
+            {
+                Id = region.Id,
+                Name = region.Name,
+                Code = region.Code,
+                RegionImgUrl = region.RegionImgUrl
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id}, regionDTO);
+        }
     }
 
     
