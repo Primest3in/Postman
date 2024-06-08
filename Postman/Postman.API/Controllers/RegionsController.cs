@@ -13,7 +13,7 @@ namespace Postman.API.Controllers
     {
         private readonly ApplicationDBContext _dbContext;
         public RegionsController(ApplicationDBContext dBContext) {
-            this._dbContext = dBContext;                 
+            this._dbContext = dBContext;
         }
 
         // GET BY: api/Regions
@@ -30,7 +30,7 @@ namespace Postman.API.Controllers
                     Code = region.Code,
                     Name = region.Name,
                     RegionImgUrl = region.RegionImgUrl
-                    
+
                 });
             }
             return Ok(regionsDTO);
@@ -40,7 +40,7 @@ namespace Postman.API.Controllers
         [Route("{id:guid}")]
         public IActionResult GetById([FromRoute] Guid id) {
             var region = _dbContext.RegionTable.FirstOrDefault(x => x.Id == id);
-            if(region == null)
+            if (region == null)
             {
                 return NotFound();
             }
@@ -55,17 +55,17 @@ namespace Postman.API.Controllers
             return Ok(regionDTO);
         }
         [HttpPost]
-        public IActionResult Create([FromBody] AddRegionDTO addRegionDTO) 
+        public IActionResult Create([FromBody] AddRegionDTO addRegionDTO)
         {
-                var region = new Region()
-                {
-                    Code = addRegionDTO.Code,
-                    Name = addRegionDTO.Name,
-                    RegionImgUrl = addRegionDTO.RegionImgUrl
-                };
+            var region = new Region()
+            {
+                Code = addRegionDTO.Code,
+                Name = addRegionDTO.Name,
+                RegionImgUrl = addRegionDTO.RegionImgUrl
+            };
 
-                _dbContext.RegionTable.Add(region);
-                _dbContext.SaveChanges();
+            _dbContext.RegionTable.Add(region);
+            _dbContext.SaveChanges();
 
             var regionDTO = new RegionDTO()
             {
@@ -75,9 +75,31 @@ namespace Postman.API.Controllers
                 RegionImgUrl = region.RegionImgUrl
             };
 
-            return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id}, regionDTO);
+            return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id }, regionDTO);
         }
-    }
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionDTO updateRegionDTO)
+        {
+            var region = _dbContext.RegionTable.FirstOrDefault(r => r.Id == id);
+            if(region ==  null)
+            {
+                return NotFound();
+            }
+            region.Code = updateRegionDTO.Code;
+            region.Name = updateRegionDTO.Name;
+            region.RegionImgUrl = updateRegionDTO.RegionImgUrl;
 
-    
+            _dbContext.SaveChanges();
+            var regionDTO = new RegionDTO()
+            {
+                Id = region.Id,
+                Code = region.Code,
+                Name = region.Name,
+                RegionImgUrl = region.RegionImgUrl,
+
+            };
+            return Ok(regionDTO);
+        } 
+    }
 }
