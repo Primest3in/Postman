@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Postman.API.Data;
@@ -15,10 +16,12 @@ namespace Postman.API.Controllers
     {
         private readonly ApplicationDBContext _dbContext;
         private readonly IRegionRepository regionRepository;
+        private readonly IMapper mapper;
 
-        public RegionsController(ApplicationDBContext dBContext, IRegionRepository regionRepository) {
+        public RegionsController(ApplicationDBContext dBContext, IRegionRepository regionRepository, IMapper mapper) {
             this._dbContext = dBContext;
             this.regionRepository = regionRepository;
+            this.mapper = mapper;
         }
 
         // GET BY: api/Regions
@@ -26,58 +29,33 @@ namespace Postman.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var regions = await regionRepository.GetAllAsync();
-            var regionsDTO = new List<RegionDTO>();
-            foreach (var region in regions)
-            {
-                regionsDTO.Add(new RegionDTO()
-                {
-                    Id = region.Id,
-                    Code = region.Code,
-                    Name = region.Name,
-                    RegionImgUrl = region.RegionImgUrl
-
-                });
-            }
+            var regionsDTO = mapper.Map< List<RegionDTO> >(regions);
             return Ok(regionsDTO);
         }
 
         [HttpGet]
         [Route("{id:guid}")]
-        public async Task<IActionResult> GetById([FromRoute] Guid id) {
+        public async Task<IActionResult> GetById([FromRoute] Guid id) 
+        {
             var region = await regionRepository.GetByIdAsync(id);
+
             if (region == null)
             {
                 return NotFound();
             }
 
-            var regionDTO = new RegionDTO()
-            {
-                Id = region.Id,
-                Code = region.Code,
-                Name = region.Name,
-                RegionImgUrl = region.RegionImgUrl
-            };
+            var regionDTO = mapper.Map<RegionDTO>(region);
+
             return Ok(regionDTO);
         }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddRegionDTO addRegionDTO)
         {
-            var region = new Region()
-            {
-                Code = addRegionDTO.Code,
-                Name = addRegionDTO.Name,
-                RegionImgUrl = addRegionDTO.RegionImgUrl
-            };
+            var region = mapper.Map<Region>(addRegionDTO);
 
             region = await regionRepository.CreateAsync(region);
 
-            var regionDTO = new RegionDTO()
-            {
-                Id = region.Id,
-                Name = region.Name,
-                Code = region.Code,
-                RegionImgUrl = region.RegionImgUrl
-            };
+            var regionDTO = mapper.Map<RegionDTO>(region);
 
             return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id }, regionDTO);
         }
@@ -90,19 +68,7 @@ namespace Postman.API.Controllers
             {
                 return NotFound();
             }
-            region.Code = updateRegionDTO.Code;
-            region.Name = updateRegionDTO.Name;
-            region.RegionImgUrl = updateRegionDTO.RegionImgUrl;
-
-            await _dbContext.SaveChangesAsync();
-            var regionDTO = new RegionDTO()
-            {
-                Id = id,
-                Code = region.Code,
-                Name = region.Name,
-                RegionImgUrl = region.RegionImgUrl,
-
-            };
+            var regionDTO = mapper.Map<UpdateRegionDTO>(region);
             return Ok(regionDTO);
         }
         [HttpDelete]
@@ -114,13 +80,7 @@ namespace Postman.API.Controllers
             {
                 return NotFound();
             }
-            var regionDTO = new RegionDTO()
-            {
-                Id = region.Id,
-                Code = region.Code,
-                Name = region.Name,
-                RegionImgUrl = region.RegionImgUrl
-            };
+            var regionDTO = mapper.Map<RegionDTO>(region);
             return Ok(regionDTO);    
         }
     }

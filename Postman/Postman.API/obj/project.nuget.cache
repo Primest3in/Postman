@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "2MOXBXcWP6AzDmkAurrRv3G2vdqfGgQhPTyC5RXxj8YRcvz9PC52ogFf6P1FbLl3f9jZ34nRvAnf1/MGdqEQZg==",
+  "dgSpecHash": "Yp5qp96QKiPCrMSN7vQuHd+7LoVXLjKKzNQAbcwU/Fv9zAGyFiDR3WPG2Q4hk4Q81+Hlyq6WayWgBrt6+CxBuw==",
   "success": true,
   "projectFilePath": "C:\\Users\\mahbu\\OneDrive\\Documents\\Postman\\Postman\\Postman.API\\Postman.API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\mahbu\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\mahbu\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\mahbu\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\mahbu\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
