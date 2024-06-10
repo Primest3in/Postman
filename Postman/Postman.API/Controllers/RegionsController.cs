@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Postman.API.Data;
 using Postman.API.Model.Domain;
 using Postman.API.Model.DTO;
+using Postman.API.Model.Repositories;
 
 
 namespace Postman.API.Controllers
@@ -13,15 +14,18 @@ namespace Postman.API.Controllers
     public class RegionsController : ControllerBase
     {
         private readonly ApplicationDBContext _dbContext;
-        public RegionsController(ApplicationDBContext dBContext) {
+        private readonly IRegionRepository regionRepository;
+
+        public RegionsController(ApplicationDBContext dBContext, IRegionRepository regionRepository) {
             this._dbContext = dBContext;
+            this.regionRepository = regionRepository;
         }
 
         // GET BY: api/Regions
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var regions = await _dbContext.RegionTable.ToListAsync();
+            var regions = await regionRepository.GetAllAsync();
             var regionsDTO = new List<RegionDTO>();
             foreach (var region in regions)
             {
@@ -40,7 +44,7 @@ namespace Postman.API.Controllers
         [HttpGet]
         [Route("{id:guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id) {
-            var region = await _dbContext.RegionTable.FirstOrDefaultAsync(x => x.Id == id);
+            var region = await regionRepository.GetByIdAsync(id);
             if (region == null)
             {
                 return NotFound();
@@ -65,8 +69,7 @@ namespace Postman.API.Controllers
                 RegionImgUrl = addRegionDTO.RegionImgUrl
             };
 
-            await _dbContext.RegionTable.AddAsync(region);
-            await _dbContext.SaveChangesAsync();
+            region = await regionRepository.CreateAsync(region);
 
             var regionDTO = new RegionDTO()
             {
@@ -82,7 +85,7 @@ namespace Postman.API.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionDTO updateRegionDTO)
         {
-            var region = await _dbContext.RegionTable.FirstOrDefaultAsync(r => r.Id == id);
+            var region = await regionRepository.UpdateAsync(id, updateRegionDTO);
             if(region ==  null)
             {
                 return NotFound();
@@ -94,7 +97,7 @@ namespace Postman.API.Controllers
             await _dbContext.SaveChangesAsync();
             var regionDTO = new RegionDTO()
             {
-                Id = region.Id,
+                Id = id,
                 Code = region.Code,
                 Name = region.Name,
                 RegionImgUrl = region.RegionImgUrl,
@@ -106,14 +109,11 @@ namespace Postman.API.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var region = await _dbContext.RegionTable.FirstOrDefaultAsync(x=> x.Id == id);
+            var region = await regionRepository.DeleteAsync(id);
             if(region  == null)
             {
                 return NotFound();
             }
-            _dbContext.RegionTable.Remove(region);
-            await _dbContext.SaveChangesAsync();
-
             var regionDTO = new RegionDTO()
             {
                 Id = region.Id,
