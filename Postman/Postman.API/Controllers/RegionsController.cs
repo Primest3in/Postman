@@ -80,7 +80,7 @@ namespace Postman.API.Controllers
             {
                 return NotFound();
             }
-            var regionDTO = mapper.Map<RegionDTO>(region);
+            var regionDTO = mapper.Map<RegionDTO>(region); 
             return Ok(regionDTO);    
         }
     }
