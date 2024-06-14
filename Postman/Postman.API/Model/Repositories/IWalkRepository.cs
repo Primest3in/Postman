@@ -9,5 +9,6 @@ namespace Postman.API.Model.Repositories
         Task<List<Walk>> GetAllAsync();
         Task<Walk> GetByIdAsync(Guid id);
         Task<UpdateWalkDTO> UpdateAsync(Guid id, UpdateWalkDTO updateWalkDTO);
+        Task<Walk> DeleteAsync(Guid id);
     }
 }

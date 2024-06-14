@@ -60,5 +60,17 @@ namespace Postman.API.Controllers
             
             return Ok(updateWalkDTO);
         }
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var walk = await walkRepository.DeleteAsync(id);
+            if (walk == null)
+            {
+                return NotFound();
+            }
+            var walkDTO = mapper.Map<WalkDTO>(walk);
+            return Ok(walkDTO);
+        }
     }
 }

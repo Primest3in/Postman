@@ -25,6 +25,17 @@ namespace Postman.API.Model.Repositories
             return walk;
         }
 
+        public async Task<Walk?> DeleteAsync(Guid id)
+        {
+            var walk = await dbContext.WalkTable.FirstOrDefaultAsync(x => x.Id == id);
+            if(walk != null)
+            {
+                dbContext.WalkTable.Remove(walk);
+                await dbContext.SaveChangesAsync();
+            }
+            return walk;
+        }
+
         public async Task<List<Walk>> GetAllAsync()
         {
             return await dbContext.WalkTable.Include("Difficulty").Include("Region").ToListAsync();
