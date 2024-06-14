@@ -14,6 +14,7 @@ namespace Postman.API.Mappings
             CreateMap<Walk, AddWalkDTO>().ReverseMap();
             CreateMap<Walk, WalkDTO>().ReverseMap();
             CreateMap<Difficulty, DifficultyDTO>().ReverseMap();
+            CreateMap<UpdateWalkDTO, Walk>().ReverseMap();
         }
     }
 }

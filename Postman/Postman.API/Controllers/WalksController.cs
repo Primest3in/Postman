@@ -33,5 +33,32 @@ namespace Postman.API.Controllers
             var walksDTO = mapper.Map<List<WalkDTO>>(walks);
             return Ok(walksDTO);
         }
+        [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
+        {
+            var walk = await walkRepository.GetByIdAsync(id);
+
+            if (walk == null)
+            {
+                return NotFound();
+            }
+
+            var walkDTO = mapper.Map<WalkDTO>(walk);
+
+            return Ok(walkDTO);
+        }
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateWalkDTO updateWalkDTO)
+        {
+            var walk = await walkRepository.UpdateAsync(id, updateWalkDTO);
+            if (walk == null)
+            {
+                return NotFound();
+            }
+            
+            return Ok(updateWalkDTO);
+        }
     }
 }
