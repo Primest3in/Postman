@@ -21,7 +21,7 @@ namespace Postman.API.Model.Repositories
 
         public async Task<List<Walk>> GetAllAsync()
         {
-            return await dbContext.WalkTable.ToListAsync();
+            return await dbContext.WalkTable.Include("Difficulty").Include("Region").ToListAsync();
         }
     }
 }
