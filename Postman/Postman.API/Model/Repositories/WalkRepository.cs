@@ -18,5 +18,10 @@ namespace Postman.API.Model.Repositories
             await dbContext.SaveChangesAsync();
             return walk;
         }
+
+        public async Task<List<Walk>> GetAllAsync()
+        {
+            return await dbContext.WalkTable.ToListAsync();
+        }
     }
 }

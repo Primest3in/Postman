@@ -26,5 +26,12 @@ namespace Postman.API.Controllers
             walk = await walkRepository.CreateAsync(walk);
             return Ok(mapper.Map<WalkDTO>(walk));
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var walks = await walkRepository.GetAllAsync();
+            var walksDTO = mapper.Map<List<WalkDTO>>(walks);
+            return Ok(walksDTO);
+        }
     }
 }
