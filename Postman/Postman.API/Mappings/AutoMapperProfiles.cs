@@ -11,6 +11,8 @@ namespace Postman.API.Mappings
             CreateMap<Region, RegionDTO>().ReverseMap();
             CreateMap<AddRegionDTO, Region>().ReverseMap();
             CreateMap<UpdateRegionDTO, Region>().ReverseMap();
+            CreateMap<Walk, AddWalkDTO>().ReverseMap();
+            CreateMap<Walk, WalkDTO>().ReverseMap();
         }
     }
 }

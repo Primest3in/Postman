@@ -76,7 +76,7 @@ namespace Postman.API.Controllers
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var region = await regionRepository.DeleteAsync(id);
-            if(region  == null)
+            if (region == null)
             {
                 return NotFound();
             }
