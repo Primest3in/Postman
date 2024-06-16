@@ -1,4 +1,5 @@
-﻿using Postman.API.Model.Domain;
+﻿using Microsoft.AspNetCore.Mvc;
+using Postman.API.Model.Domain;
 using Postman.API.Model.DTO;
 
 namespace Postman.API.Model.Repositories
@@ -6,7 +7,7 @@ namespace Postman.API.Model.Repositories
     public interface IWalkRepository
     {
         Task<Walk> CreateAsync(Walk walk);
-        Task<List<Walk>> GetAllAsync();
+        Task<List<Walk>> GetAllAsync([FromQuery] string? filterOn = null, [FromQuery] string? filterQuery = null);
         Task<Walk> GetByIdAsync(Guid id);
         Task<UpdateWalkDTO> UpdateAsync(Guid id, UpdateWalkDTO updateWalkDTO);
         Task<Walk> DeleteAsync(Guid id);

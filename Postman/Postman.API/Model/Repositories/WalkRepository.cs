@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using Postman.API.Data;
@@ -36,9 +37,18 @@ namespace Postman.API.Model.Repositories
             return walk;
         }
 
-        public async Task<List<Walk>> GetAllAsync()
+        public async Task<List<Walk>> GetAllAsync([FromQuery] string? filterOn = null, [FromQuery] string? filterQuery = null)
         {
-            return await dbContext.WalkTable.Include("Difficulty").Include("Region").ToListAsync();
+            //return await dbContext.WalkTable.Include("Difficulty").Include("Region").ToListAsync();
+            var walks = dbContext.WalkTable.Include("Difficulty").Include("Region").AsQueryable();
+            if(string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == false)
+            {
+                if(filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = walks.Where(x=> x.Name.Contains(filterQuery));
+                }
+            }
+            return await walks.ToListAsync();
         }
 
         public async Task<Walk?> GetByIdAsync(Guid id)
