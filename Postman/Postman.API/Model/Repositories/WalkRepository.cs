@@ -37,7 +37,7 @@ namespace Postman.API.Model.Repositories
             return walk;
         }
 
-        public async Task<List<Walk>> GetAllAsync([FromQuery] string? filterOn = null, [FromQuery] string? filterQuery = null)
+        public async Task<List<Walk>> GetAllAsync([FromQuery] string? filterOn, [FromQuery] string? filterQuery, [FromQuery] string? sortBy = null, [FromQuery] bool isAscending = true)
         {
             //return await dbContext.WalkTable.Include("Difficulty").Include("Region").ToListAsync();
             var walks = dbContext.WalkTable.Include("Difficulty").Include("Region").AsQueryable();
@@ -48,6 +48,21 @@ namespace Postman.API.Model.Repositories
                     walks = walks.Where(x=> x.Name.Contains(filterQuery));
                 }
             }
+            if (string.IsNullOrWhiteSpace(sortBy) == false)
+            {
+                if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    if(isAscending == true)
+                    {
+                        walks = walks.OrderBy(i => i.Name);
+                    } else
+                    {
+                        walks = walks.OrderByDescending(i => i.Name);
+                    }
+                }
+            }
+
+
             return await walks.ToListAsync();
         }
 

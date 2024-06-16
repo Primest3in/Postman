@@ -27,9 +27,9 @@ namespace Postman.API.Controllers
             return Ok(mapper.Map<WalkDTO>(walk));
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery)
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery, [FromQuery] string? sortBy = null, [FromQuery] bool isAscending = true)
         {
-            var walks = await walkRepository.GetAllAsync(filterOn, filterQuery);
+            var walks = await walkRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending);
             var walksDTO = mapper.Map<List<WalkDTO>>(walks);
             return Ok(walksDTO);
         }
