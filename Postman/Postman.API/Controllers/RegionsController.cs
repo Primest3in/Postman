@@ -8,7 +8,6 @@ using Postman.API.Model.Domain;
 using Postman.API.Model.DTO;
 using Postman.API.Model.Repositories;
 
-
 namespace Postman.API.Controllers
 {
     [Route("api/[controller]")]
@@ -18,18 +17,25 @@ namespace Postman.API.Controllers
         private readonly ApplicationDBContext _dbContext;
         private readonly IRegionRepository regionRepository;
         private readonly IMapper mapper;
+        private readonly ILogger<RegionsController> logger;
 
-        public RegionsController(ApplicationDBContext dBContext, IRegionRepository regionRepository, IMapper mapper) {
+        public RegionsController(ApplicationDBContext dBContext,
+            IRegionRepository regionRepository,
+            IMapper mapper, 
+            ILogger<RegionsController> logger) 
+        {
             this._dbContext = dBContext;
             this.regionRepository = regionRepository;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         // GET BY: api/Regions
         [HttpGet]
-        [Authorize(Roles = "Reader")]
+        //[Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {
+            logger.LogInformation("GetAll() method invoked");
             var regions = await regionRepository.GetAllAsync();
             var regionsDTO = mapper.Map< List<RegionDTO> >(regions);
             return Ok(regionsDTO);
