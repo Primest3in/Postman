@@ -32,7 +32,7 @@ namespace Postman.API.Controllers
 
         // GET BY: api/Regions
         [HttpGet]
-        //[Authorize(Roles = "Reader")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {
             logger.LogInformation("GetAll() method invoked");
