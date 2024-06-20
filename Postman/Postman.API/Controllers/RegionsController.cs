@@ -13,7 +13,6 @@ namespace Postman.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class RegionsController : ControllerBase
     {
         private readonly ApplicationDBContext _dbContext;
@@ -28,6 +27,7 @@ namespace Postman.API.Controllers
 
         // GET BY: api/Regions
         [HttpGet]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {
             var regions = await regionRepository.GetAllAsync();
@@ -37,6 +37,7 @@ namespace Postman.API.Controllers
 
         [HttpGet]
         [Route("{id:guid}")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetById([FromRoute] Guid id) 
         {
             var region = await regionRepository.GetByIdAsync(id);
@@ -51,6 +52,7 @@ namespace Postman.API.Controllers
             return Ok(regionDTO);
         }
         [HttpPost]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Create([FromBody] AddRegionDTO addRegionDTO)
         {
             var region = mapper.Map<Region>(addRegionDTO);
@@ -63,6 +65,7 @@ namespace Postman.API.Controllers
         }
         [HttpPut]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionDTO updateRegionDTO)
         {
             var region = await regionRepository.UpdateAsync(id, updateRegionDTO);
@@ -75,6 +78,7 @@ namespace Postman.API.Controllers
         }
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var region = await regionRepository.DeleteAsync(id);
